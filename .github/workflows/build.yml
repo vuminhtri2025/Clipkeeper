@@ -64,8 +64,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Cài Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Chấp nhận license Android SDK (SDK đã có sẵn trên runner)
+        shell: bash
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          sudo mkdir -p "$ANDROID_HOME/licenses"
+          echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" | sudo tee "$ANDROID_HOME/licenses/android-sdk-license" > /dev/null
+          echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" | sudo tee "$ANDROID_HOME/licenses/android-sdk-preview-license" > /dev/null
 
       - name: Cài Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
