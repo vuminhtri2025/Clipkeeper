@@ -79,23 +79,29 @@ jobs:
 
       - name: Build APK (release, đã ký)
         working-directory: ${{ env.PROJECT_DIR }}
-        run: gradle assembleRelease --no-daemon --stacktrace
+        run: |
+          gradle assembleRelease --no-daemon --stacktrace || {
+            echo "::warning::R8 báo lỗi, build lại bản không rút gọn"
+            gradle assembleRelease -Pminify=false --no-daemon --stacktrace
+          }
 
       - name: Đổi tên APK
         run: |
+          VERSION=$(grep -m1 'versionName' "${{ env.PROJECT_DIR }}/app/build.gradle.kts" | sed 's/.*"\(.*\)".*/\1/')
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           mkdir -p out
-          cp "${{ env.PROJECT_DIR }}"/app/build/outputs/apk/release/*.apk out/ClipKeeper.apk
+          cp "${{ env.PROJECT_DIR }}"/app/build/outputs/apk/release/*.apk "out/ClipKeeper-v$VERSION.apk"
           ls -la out
 
       - name: Upload APK (Artifacts)
         uses: actions/upload-artifact@v4
         with:
           name: ClipKeeper-apk
-          path: out/ClipKeeper.apk
+          path: out/*.apk
 
       - name: Tạo Release để tải APK về điện thoại
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: build-${{ github.run_number }}
-          name: ClipKeeper build ${{ github.run_number }}
-          files: out/ClipKeeper.apk
+          tag_name: v${{ env.VERSION }}-build${{ github.run_number }}
+          name: ClipKeeper v${{ env.VERSION }} (build ${{ github.run_number }})
+          files: out/*.apk
