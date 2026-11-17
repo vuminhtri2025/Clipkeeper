@@ -1,31 +1,49 @@
 name: Build APK
 
-# Dat file nay tai: .github/workflows/build.yml
-# Dat file source.zip (ma nguon Android) o thu muc goc cua repo.
 on:
   push:
-    branches: [main, master]
-    paths:
-      - 'source.zip'
-      - '.github/workflows/build.yml'
+    branches: [ main, master ]
   workflow_dispatch:
 
 permissions:
-  contents: write
-
-env:
-  # Thong tin keystore (tich hop san de moi lan build deu ky cung 1 khoa => cap nhat de len app cu duoc)
-  KEYSTORE_PASSWORD: chitieu2026
-  KEY_ALIAS: chitieu
-  KEY_PASSWORD: chitieu2026
-  KEYSTORE_B64: "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"
+  contents: write   # cần để tạo Release chứa file APK
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    env:
+      # Keystore được nhúng sẵn (base64) -> mọi bản build cùng chữ ký, cài đè cập nhật được.
+      KEYSTORE_B64: "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"
+      KEYSTORE_PASSWORD: clipvault123
+      KEY_ALIAS: clipvault
+      KEY_PASSWORD: clipvault123
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Unzip source
+        run: |
+          set -eu
+          ZIP=$(ls -1 *.zip 2>/dev/null | head -n 1 || true)
+          if [ -n "$ZIP" ]; then
+            echo "Giai nen: $ZIP"
+            rm -rf _src && mkdir -p _src
+            unzip -q -o "$ZIP" -d _src
+            SETTINGS=$(find _src -maxdepth 3 -name settings.gradle.kts | head -n 1 || true)
+          else
+            echo "Khong co file zip, dung ma nguon trong repo"
+            SETTINGS=$(find . -maxdepth 2 -name settings.gradle.kts -not -path './_src/*' | head -n 1 || true)
+          fi
+          if [ -z "${SETTINGS:-}" ]; then
+            echo "::error::Khong tim thay settings.gradle.kts"
+            exit 1
+          fi
+          ROOT=$(cd "$(dirname "$SETTINGS")" && pwd)
+          echo "PROJECT_DIR=$ROOT" >> "$GITHUB_ENV"
+          echo "Project: $ROOT"
+          ls -la "$ROOT"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -33,53 +51,45 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
+      - name: Set up Android SDK (tu dong chap nhan license)
         uses: android-actions/setup-android@v3
+
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses > /dev/null || true
+
+      - name: Restore keystore
+        run: |
+          echo "$KEYSTORE_B64" | base64 -d > "$PROJECT_DIR/app/clipvault.jks"
+          keytool -list -keystore "$PROJECT_DIR/app/clipvault.jks" -storepass "$KEYSTORE_PASSWORD" | head -n 8
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
-      - name: Unzip source
-        run: |
-          set -e
-          test -f source.zip || { echo "Khong tim thay source.zip o thu muc goc repo"; exit 1; }
-          rm -rf project
-          mkdir project
-          unzip -q -o source.zip -d project
-          SETTINGS=$(find project -maxdepth 3 -name settings.gradle.kts | head -n 1)
-          test -n "$SETTINGS" || { echo "Khong tim thay settings.gradle.kts trong source.zip"; exit 1; }
-          echo "PROJECT_DIR=$(dirname "$SETTINGS")" >> "$GITHUB_ENV"
-          echo "Project dir: $(dirname "$SETTINGS")"
-
-      - name: Restore keystore
-        run: |
-          set -e
-          echo "$KEYSTORE_B64" | base64 -d > "$PROJECT_DIR/app/release.jks"
-          keytool -list -keystore "$PROJECT_DIR/app/release.jks" -storepass "$KEYSTORE_PASSWORD" | head -n 5
-
       - name: Build release APK
-        run: |
-          cd "$PROJECT_DIR"
-          gradle assembleRelease --no-daemon --stacktrace
+        run: gradle -p "$PROJECT_DIR" assembleRelease --no-daemon --stacktrace
 
-      - name: Collect APK
+      - name: Verify signature
         run: |
-          mkdir -p out
-          cp "$PROJECT_DIR"/app/build/outputs/apk/release/*.apk out/ChiTieu.apk
-          ls -la out
+          APKSIGNER=$(ls -1 "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --print-certs "$PROJECT_DIR/app/build/outputs/apk/release/app-release.apk"
+
+      - name: Prepare APK
+        run: |
+          mkdir -p dist
+          cp "$PROJECT_DIR/app/build/outputs/apk/release/app-release.apk" "dist/ClipVault-${{ github.run_number }}.apk"
+          ls -lh dist
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ChiTieu-apk
-          path: out/ChiTieu.apk
+          name: ClipVault-apk
+          path: dist/*.apk
 
-      - name: Publish GitHub Release
-        if: github.event_name != 'pull_request'
+      - name: Publish Release (tai APK truc tiep tren dien thoai)
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
-          name: Chi Tieu build ${{ github.run_number }}
-          files: out/ChiTieu.apk
+          name: ClipVault build ${{ github.run_number }}
+          files: dist/*.apk
