@@ -1,26 +1,23 @@
 name: Build APK
 
-# Cách dùng: đẩy file AiManager.zip (source) + file này (.github/workflows/build.yml) lên repo.
-# Workflow tự giải nén file .zip ở thư mục gốc repo, build APK đã ký và đăng lên Releases.
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
 
 permissions:
-  contents: write   # cần để tạo Release
+  contents: write   # cần để tạo Release chứa file APK
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     env:
-      # Keystore tích hợp sẵn (base64). Giữ nguyên để các bản build sau cài đè (update) lên bản cũ.
-      KEYSTORE_BASE64: "MIIKqgIBAzCCClQGCSqGSIb3DQEHAaCCCkUEggpBMIIKPTCCBbQGCSqGSIb3DQEHAaCCBaUEggWhMIIFnTCCBZkGCyqGSIb3DQEMCgECoIIFQDCCBTwwZgYJKoZIhvcNAQUNMFkwOAYJKoZIhvcNAQUMMCsEFOUFxdkg5ZauG/7t10G4QRy+gURFAgInEAIBIDAMBggqhkiG9w0CCQUAMB0GCWCGSAFlAwQBKgQQsF03lX5Ed0lTRpGBFvTj0QSCBNA3SaUfJ6MTO/Uc9CbMszK2ehEPyMbwDg/SvRE2G1qa0T5PYSkAwOBZGfk2PKj2MnsIcE6WGr87H8Q+MQPg/DagObGrBymPB8WSoIgHOabJzmtOKnpYY4V8r5emZ4VDdc7nDjKnC7eJVo3Jg6U2UWktibZ89lw1wFo+u6uH8RQ5ul5Dq4zTa/CZrKz8wU8HmyqJ9sT3PG14+xdnwi+bjQLDXBWz9QVxDLK6QA6zISmKnkAQyKT97mI7wgLGFOyf4sK9IxPbwvf/pkc+eG6auOeyqlDuAzbmI/35XbEO4/jVk/496+tPRQAXP9Rn1mvCkrYwSY/Zrfoaq9oYSfpBTuS3HewCFADwfteCx5rVHxH/GAP+YzoGD17GNjuPRRXs7bKJhqIQEbC4sP++nXiyMl7APSPtqJW/0nRSjjZeYtMjagLz+j8k0qK/lu3uUGg1Tkw3rvGsBmE0pAZRjYCPXijck1LrFuqTd5KJLo27fXh/bRv7ReN1Fjl43qgagLwak2WFN5a/DhjMXGoD3vW64OUQZP1wLAN0IX0Szmep/IASAjHcCVHo4HzSX82F0zTTC8sGbi0t1hIgMo/3Wzha3j+nbRCnl9uEK8l7o9gziaoCTf7/siX6FTR36DpDZNMLnXLr6g52GwQees3i7IDzFD8R3TxiESfg+DE/V2X3xJwi3HLvyQbscASuK5FgWVKRMBCNRNqo6bFH/KkqMZ5/maQGh5VpXOjb8mjuGSVySSor4s5xKWD0udaRJ1KFSKf3oKmIktFqkPyqIoHh4t274NeR1ATqGrwf9P1bNJnHS5ufkws8LmT2QpeK/WzMKzNtYMrkozeaoY1QB2+g16yZZRNY+K1OzsEz5TUaRigluosdV0QdPFzOdDeVxZ8lPL2enHfLn4PQ5Uncxb1R+6HdeInrEMEacN9sv4qUsfXes8jB6gz/4kcElDPBbSAaCl8MPgcfwJwqlm9LLtw2SFgc2h25CosmMb61LUDfO8TylaE+4n7lxz9ZGqEkde3ElRzVuaAZWHiiyDoE9sPW4we+kNmp9FzD4HsaZ8g71tMOQX7WVS3cRRhalf0zsqkoRzGYRrQ9ClpSOT7GtgXubIsnlXSQQXhKmoQ+pjhrSVvkfbqnsVJv6f6arkI8jyhsStuH52TmwP8CEbcNQ+YMZBhaPtKQ2jhSdMYYH1VNj76e26XbsES151dBCUKfC0clHh5RLRL2qp5OwRCXB32qXifvYzQhdibBuMJSoePIXX/DxR5vh3Cd0l7azwsLVYWIsXmUTgACEUc4Y7wryl0giNW231Yksx8NjMkUvAVhQk0v3P5Xhi5hJ5Pl3BABmMiAGXefAxQ+vKDq6fEtIv3xefSlj75mBdrwCTFoyIp1eXxQ9QZsDghmXxzPLt9BF58V89DUjJgQi1wgiQRwjVYmzBywlORiC+Zz5R7xGpSDQaYEu/n7g0wD3aN5YLqoKzkxxXLjz7tq2mDVUh+fYsUCOZ//hdpj5wqQvfXa8P8wRRN4ttmqbvJ2FbOkYuMRcI/7bynj5AqHmYUMp6yy4TxCUfLbKemFtOGHt75lnx2fbkURDeJU9X9cSORiI0Q48CHMDA2fO7d1L8Nlk4iRuAz/+sbfEUKKlWWZApapfWdupG1LnA4oczFGMCEGCSqGSIb3DQEJFDEUHhIAYQBpAG0AYQBuAGEAZwBlAHIwIQYJKoZIhvcNAQkVMRQEElRpbWUgMTc5NDkyMzI0MjQyNzCCBIEGCSqGSIb3DQEHBqCCBHIwggRuAgEAMIIEZwYJKoZIhvcNAQcBMGYGCSqGSIb3DQEFDTBZMDgGCSqGSIb3DQEFDDArBBS5iwZIMOLeka0y9yEg+wu8tsZKggICJxACASAwDAYIKoZIhvcNAgkFADAdBglghkgBZQMEASoEEI2BnX1n4G6kV41B+EKxmtCAggPwjP5Mzi8n5bUoHvSFoHGWUNtq7xx0jrXiTZaRSOpUL0Quv64gMle0Lv0Df4s+GkrWVMQX0AN08jMj7XnZqHIo2fZYWDskexN1nFfleupG8cbomVEluMkvNaetUcTfzvYNJWckjTtuxPzy6Z8jqgxY4Qw2iaHBBrXsk349V9OrKPpWtK2jfO3gFsPGQxqvGpGmQvH7Xw6Uv40wLAasB2qXVIipWwWVpCK8KrmoUcWGPBYu2ohCzzcHGIkYJKewpCY6LQ2qZTH4i9KEJy7Bm48Imup82RxpjuP7Z/60rUWXaM/1v2xVCMGQcqi82EXe1u+44SLGwR+STjdb6dEWZ41mJ3AfO7zrc5p68aXG60+2ufveWrYILQMEX/arI163Lp810bmiY2zfn0RoYkchw7fSRACaGE5M9T3TkTaHb1w987XxQsxBnlKY23/sI9BPDwdP27JOcFQC+Wp76Hkyakz+SrVcyC09aq0ZtbTnffK9vyNBTWKkODxroX56tI9KFmy0o/pPi5JxR+04L997OQWJSBJLKhuPEl6l1TmpWeGj/VXMZfvYs+r3+4/HL0Hem9GLgNqrUxathqDIqGUjs56+G6LMerxK7UITwxDIhW8z5/ebLK6SVyqbFCxdNtV1HgWgOervRVy4YWew7RkiAYV9JxPuONCcv9zBeWph6kvhkpbR9b3Ryd/xRiT8DvSHHW7BvhEz0bzJ+ZvaOhXHJcNb29NDiP5HNY3sLOP03xh2Zp/onpgP22xn9ynJXM2VtrMToTnS6TLO0OGdLOI9EoYRTkpXlxE/dBKOrXCbWXv6t57yOmYRtGV3NdVQbp3B9oLE3yOJR/TLYLdTPGaqWZy3CXV/7wQ+w1HDDvMrst/Wcod2L9Ae2aI1h5jd2eqlMe5l6TcC9Kz4BBNPcXOoAWcnytk2Y+Hwct4SO02IDHaK97Ztiy6zWim3xM83lD0G8S+sJFLgcIPHjI5ti45E4a2nNot19FcYliLMb5TqrqYg5KsbaqZIwibkLzGg2Wn66U0E4VYq1Il+cJynTyEHCumLvdDZMQhmHcGtoX1pRG3w51HVP+RCTgmkbzdqsGVn38oZ/aybvPRFa/jV6U22ZhPIb2W4w6kCI52ldD/l8YPQD9EdoYzYlHwAbv4hH1Ux8LGwJN0TkoSXH9y7wS1b2HYgYmdIog6pMEM3UjPPqisC4BvIGSFeS/uxbUrfmkjeWSM1SUY3RLZlvY3w2nlz/gLwSW288iNWvMfUS12gAGH2GItlsAiN4vDbKB6Dq/H8EKH1n/q1cB6D4hjqBxJ/kSVFYfPyLt34JeJSZq71J53Og9obXTAW5pAmaQFfR4VbHEQ5ME0wMTANBglghkgBZQMEAgEFAAQgcoCl03p8NrqZG1im68kBFjgt0f8BIS3bTqE7oH4Dl5MEFIahb/9lRpytIlxNQxbiM6Bej4fWAgInEA=="
-      KEYSTORE_PASSWORD: "AiManager@2026"
-      KEY_ALIAS: "aimanager"
-      KEY_PASSWORD: "AiManager@2026"
+      # Keystore được nhúng sẵn (base64) -> mọi bản build cùng chữ ký, cài đè cập nhật được.
+      KEYSTORE_B64: "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"
+      KEYSTORE_PASSWORD: clipvault123
+      KEY_ALIAS: clipvault
+      KEY_PASSWORD: clipvault123
 
     steps:
       - name: Checkout
@@ -28,85 +25,76 @@ jobs:
 
       - name: Unzip source
         run: |
-          ZIP=$(ls -1 *.zip 2>/dev/null | head -n 1)
-          if [ -z "$ZIP" ]; then
-            echo "::error::Không tìm thấy file .zip ở thư mục gốc repo"
+          set -eu
+          if [ -f ClipVault.zip ]; then ZIP=ClipVault.zip; else ZIP=$(ls -1 *.zip 2>/dev/null | head -n 1 || true); fi
+          if [ -n "$ZIP" ]; then
+            echo "Giai nen: $ZIP"
+            rm -rf _src && mkdir -p _src
+            unzip -q -o "$ZIP" -d _src
+            SETTINGS=$(find _src -maxdepth 3 -name settings.gradle.kts | head -n 1 || true)
+          else
+            echo "Khong co file zip, dung ma nguon trong repo"
+            SETTINGS=$(find . -maxdepth 2 -name settings.gradle.kts -not -path './_src/*' | head -n 1 || true)
+          fi
+          if [ -z "${SETTINGS:-}" ]; then
+            echo "::error::Khong tim thay settings.gradle.kts"
             exit 1
           fi
-          echo "Giải nén: $ZIP"
-          rm -rf _src
-          mkdir _src
-          unzip -q -o "$ZIP" -d _src
-          SETTINGS=$(find _src -maxdepth 3 \( -name settings.gradle.kts -o -name settings.gradle \) -not -path '*/__MACOSX/*' | head -n 1)
-          if [ -z "$SETTINGS" ]; then
-            echo "::error::Không thấy settings.gradle(.kts) trong file zip"
-            exit 1
-          fi
-          ROOT=$(dirname "$SETTINGS")
-          echo "PROJECT_ROOT=$ROOT" >> "$GITHUB_ENV"
-          echo "Project root: $ROOT"
+          ROOT=$(cd "$(dirname "$SETTINGS")" && pwd)
+          echo "PROJECT_DIR=$ROOT" >> "$GITHUB_ENV"
+          echo "Project: $ROOT"
+          ls -la "$ROOT"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: '17'
 
-      - name: Accept Android SDK licenses (ghi file license, không cần sdkmanager)
+      - name: Accept Android SDK licenses (ghi file license, khong can sdkmanager)
         run: |
           SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          echo "SDK: $SDK"
-          sudo mkdir -p "$SDK/licenses"
-          printf '%s\n' \
-            "8933bad161af4178b1185d1a37fbf41ea5269c55" \
-            "d56f5187479451eabf01fb78af6dfcb131a6481e" \
-            "24333f8a63b6825ea9c5514f83c2829b004d1fee" \
-            | sudo tee "$SDK/licenses/android-sdk-license" > /dev/null
-          printf '%s\n' "84831b9409646a918e30573bab4c9c91346d8abd" \
-            | sudo tee "$SDK/licenses/android-sdk-preview-license" > /dev/null
-          ls -l "$SDK/licenses"
+          echo "ANDROID_HOME=$SDK"
+          mkdir -p "$SDK/licenses"
+          printf "\n24333f8a63b6825ea9c5514f83c2829b004d1fee\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e\n84831b9409646a918e30573bab4c9c91346d8abd\n" > "$SDK/licenses/android-sdk-license"
+          printf "\n84831b9409646a918e30573bab4c9c91346d8abd\n" > "$SDK/licenses/android-sdk-preview-license"
+          echo "sdk.dir=$SDK" > "$PROJECT_DIR/local.properties"
+          ls -la "$SDK/licenses"
 
       - name: Restore keystore
         run: |
-          mkdir -p "$PROJECT_ROOT/app/keystore"
-          echo "$KEYSTORE_BASE64" | base64 -d > "$PROJECT_ROOT/app/keystore/aimanager.jks"
-          keytool -list -keystore "$PROJECT_ROOT/app/keystore/aimanager.jks" -storepass "$KEYSTORE_PASSWORD" | head -n 6
+          mkdir -p "$PROJECT_DIR/app/signing"
+          echo "$KEYSTORE_B64" | base64 -d > "$PROJECT_DIR/app/signing/clipvault-release.jks"
+          keytool -list -keystore "$PROJECT_DIR/app/signing/clipvault-release.jks" -storepass "$KEYSTORE_PASSWORD" | head -n 8
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.7"
+          gradle-version: '8.9'
 
       - name: Build release APK
-        run: |
-          cd "$PROJECT_ROOT"
-          gradle assembleRelease --no-daemon --stacktrace
+        run: gradle -p "$PROJECT_DIR" assembleRelease --no-daemon --stacktrace
 
       - name: Verify signature
         run: |
-          APK=$(ls "$PROJECT_ROOT"/app/build/outputs/apk/release/*.apk | head -n 1)
-          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          APKSIGNER=$(ls "$SDK"/build-tools/*/apksigner | sort -V | tail -n 1)
-          "$APKSIGNER" verify --verbose --print-certs "$APK" | head -n 12
+          APKSIGNER=$(ls -1 "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -n 1)
+          "$APKSIGNER" verify --print-certs "$PROJECT_DIR/app/build/outputs/apk/release/app-release.apk"
 
       - name: Prepare APK
         run: |
           mkdir -p dist
-          cp "$PROJECT_ROOT"/app/build/outputs/apk/release/*.apk "dist/QuanLyAI-${{ github.run_number }}.apk"
+          cp "$PROJECT_DIR/app/build/outputs/apk/release/app-release.apk" "dist/ClipVault-${{ github.run_number }}.apk"
           ls -lh dist
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: QuanLyAI-apk
+          name: ClipVault-apk
           path: dist/*.apk
-          if-no-files-found: error
 
-      - name: Publish Release (tải APK trực tiếp trên điện thoại)
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "v1.0.${{ github.run_number }}" dist/*.apk \
-            --repo "${{ github.repository }}" \
-            --title "Quản lý AI v1.0.${{ github.run_number }}" \
-            --notes "Bản build tự động #${{ github.run_number }}"
+      - name: Publish Release (tai APK truc tiep tren dien thoai)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: ClipVault build ${{ github.run_number }}
+          files: dist/*.apk
